@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>本の一覧表示</title>
+</head>
+<body>
+
+<h1>Google Books 検索</h1>
+<form th:action="@{/search}" method="post">
+    <input type="text" name="query" placeholder="検索ワード">
+    <button type="submit">検索</button>
+</form>
+
+<div th:if="${books}">
+    <h2>検索結果</h2>
+    <form th:action="@{/book-register}" method="post">
+        <ul>
+            <li th:each="book : ${books}">
+                <input type="radio" name="title" th:value="${book.title}">
+                <span th:text="${book.title}"></span>
+            </li>
+        </ul>
+        <button type="submit">保存</button>
+    </form>
+</div>
+</form>
+</body>
+</html>
