@@ -1,6 +1,7 @@
 package com.example.BookApplication.Contoroller;
 
 
+import com.example.BookApplication.DTO.BookResponse;
 import com.example.BookApplication.Model.Book;
 import com.example.BookApplication.Service.BookService;
 import com.example.BookApplication.Service.GoogleBooksService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -37,17 +39,23 @@ public class BookController {
     @PostMapping("/book-register")
     public String create(@ModelAttribute Book book, Model model){
         service.crateBook(book);
-//        List<Book> bookList = service.findAll();
-//        model.addAttribute("bookList", bookList);
-//        return "bookList";
         return "redirect:/book-list";
 
     }
 
-    @PostMapping("/search")
-    public String searchBooks(@RequestParam String query, Model model){
-        List<Book> books =  googleBooksService.searchBooks(query).block();
-        model.addAttribute("books", books);
-        return "register";
+    @GetMapping("/search")
+    public Mono<ModelAndView> searchBooks(@RequestParam String query, Model model){
+        return googleBooksService.searchBooks(query)
+                .map(bookResponse -> {
+                ModelAndView modelAndView = new ModelAndView("register");
+                modelAndView.addObject("books", bookResponse.getItems());
+                return modelAndView;
+                });
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteBook(@PathVariable int id){
+        service.deleteBookById(id);
+        return "redirect:/book-list";
     }
 }

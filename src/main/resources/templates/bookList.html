@@ -7,9 +7,19 @@
 <body>
 <a th:href="@{book-register}">書籍登録</a>
 <table>
+    <tr>
+        <th>ID</th>
+        <th>書籍名</th>
+        <th>サムネイル</th>
+    </tr>
     <tr th:each="book : ${bookList}" th:object="${book}">
         <td th:text="*{id}"></td>
         <td th:text="*{title}"></td>
+        <td><img th:src="*{thumbnail}"></td>
+        <td><form th:action="@{/delete/{id}(id=*{id})}" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <button type="submit">削除</button>
+        </form></td>
     </tr>
 </table>
 </body>

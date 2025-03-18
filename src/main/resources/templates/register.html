@@ -7,23 +7,24 @@
 <body>
 
 <h1>Google Books 検索</h1>
-<form th:action="@{/search}" method="post">
+<form th:action="@{/search}" method="get">
     <input type="text" name="query" placeholder="検索ワード">
     <button type="submit">検索</button>
 </form>
 
 <div th:if="${books}">
     <h2>検索結果</h2>
-    <form th:action="@{/book-register}" method="post">
         <ul>
             <li th:each="book : ${books}">
-                <input type="radio" name="title" th:value="${book.title}">
-                <span th:text="${book.title}"></span>
+                <span th:text="${book.volumeInfo.title}"></span>
+                <img th:src="${book.volumeInfo.getThumbnail()}" alt="Book Thumbnail">
+                <form th:action="@{/book-register}" method="post">
+                    <input type="hidden" name="title" th:value="${book.volumeInfo.title}">
+                    <input type="hidden" name="thumbnail" th:value="${book.volumeInfo.getThumbnail()}">
+                    <button type="submit">登録</button>
+                </form>
             </li>
         </ul>
-        <button type="submit">保存</button>
-    </form>
 </div>
-</form>
 </body>
 </html>

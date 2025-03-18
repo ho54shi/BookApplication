@@ -19,8 +19,12 @@ public class Book {
     @Column(name="title")
     private String title;
 
-    public Book(String title) {
+    @Column(name="thumbnail")
+    private String thumbnail;
+
+    public Book(String title, String thumbnail) {
         this.title = title;
+        this.thumbnail = thumbnail;
     }
 }
 

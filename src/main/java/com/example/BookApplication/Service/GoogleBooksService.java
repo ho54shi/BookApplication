@@ -1,5 +1,6 @@
 package com.example.BookApplication.Service;
 
+import com.example.BookApplication.DTO.BookResponse;
 import com.example.BookApplication.Model.Book;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,11 @@ public class GoogleBooksService {
         this.webClient =  webClientBuilder.baseUrl("https://www.googleapis.com/books/v1").build();
     }
 
-    public Mono<List<Book>> searchBooks(String query){
+    public Mono<BookResponse> searchBooks(String query){
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/volumes").queryParam("q", query).build())
                 .retrieve()
-                .bodyToMono(JsonNode.class)
-                .map(this::parseBooks);
+                .bodyToMono(BookResponse.class);
     }
 
     private List<Book> parseBooks(JsonNode jsonNode){
@@ -32,7 +32,6 @@ public class GoogleBooksService {
                 JsonNode volumeInfo = item.get("volumeInfo");
                 if(volumeInfo != null){
                     String title = volumeInfo.has("title") ? volumeInfo.get("title").asText(): "No Title";
-                    books.add(new Book(title));
                 }
             }
         }

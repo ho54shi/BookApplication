@@ -23,4 +23,9 @@ public class BookService {
     public void crateBook(Book book) {
         repository.save(book);
     }
+
+    @Transactional
+    public void deleteBookById(int id){
+        repository.deleteById(id);
+    }
 }
