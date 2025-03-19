@@ -19,6 +19,19 @@
         <td th:text="*{title}"></td>
         <td><img th:src="*{thumbnail}" style="width:80px; height: auto;"></td>
         <td>
+            <form th:action="@{/update-status}" method="post">
+                <input type="hidden" name="id" th:value="*{id}">
+                <select name="status" class="form-select">
+                    <option th:each="status : ${T(com.example.BookApplication.Model.ReadingStatus).values()}"
+                        th:value="${status}"
+                        th:text="${status.getLabel()}"
+                        th:selected="${status == book.status}">
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-secondary">更新</button>
+            </form>
+        </td>
+        <td>
             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
                     th:attr="data-book-id=*{id}, data-book-title=*{title}">削除</button>
         </td>

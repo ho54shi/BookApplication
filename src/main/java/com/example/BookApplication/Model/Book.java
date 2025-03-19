@@ -22,6 +22,9 @@ public class Book {
     @Column(name="thumbnail")
     private String thumbnail;
 
+    @Enumerated(EnumType.STRING)
+    private ReadingStatus status = ReadingStatus.UNREAD;
+
     public Book(String title, String thumbnail) {
         this.title = title;
         this.thumbnail = thumbnail;

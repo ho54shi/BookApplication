@@ -3,6 +3,7 @@ package com.example.BookApplication.Contoroller;
 
 import com.example.BookApplication.DTO.BookResponse;
 import com.example.BookApplication.Model.Book;
+import com.example.BookApplication.Model.ReadingStatus;
 import com.example.BookApplication.Service.BookService;
 import com.example.BookApplication.Service.GoogleBooksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class BookController {
 
     @GetMapping("/book-list")
     public String bookList(Model model){
-        List<Book> bookList = service.findAll();
+//        List<Book> bookList = service.findAll();
+        List<Book> bookList = service.findAllSortedById();
         model.addAttribute("bookList", bookList);
         return "bookList";
     }
@@ -56,6 +58,12 @@ public class BookController {
     @PostMapping("/delete/{id}")
     public String deleteBook(@PathVariable int id){
         service.deleteBookById(id);
+        return "redirect:/book-list";
+    }
+
+    @PostMapping("/update-status")
+    public String updateStatus(@RequestParam int id, @RequestParam ReadingStatus status){
+        service.updateBookStatus(id, status);
         return "redirect:/book-list";
     }
 }
