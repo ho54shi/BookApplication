@@ -26,7 +26,6 @@ public class BookController {
 
     @GetMapping("/book-list")
     public String bookList(Model model){
-//        List<Book> bookList = service.findAll();
         List<Book> bookList = service.findAllSortedById();
         model.addAttribute("bookList", bookList);
         return "bookList";
